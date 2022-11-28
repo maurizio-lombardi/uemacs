@@ -558,6 +558,8 @@ void updpos(void)
 		updext();
 	} else
 		lbound = 0;
+
+	modeline(curwp);
 }
 
 /*
@@ -1194,26 +1196,19 @@ static void modeline(struct window *wp)
 	}
 
 	{			/* determine if top line, bottom line, or both are visible */
-		struct line *lp = wp->w_linep;
-		int rows = wp->w_ntrows;
 		char *msg = NULL;
 
-		vtcol = n - 7;	/* strlen(" top ") plus a couple */
-		while (rows--) {
-			lp = lforw(lp);
-			if (lp == wp->w_bufp->b_linep) {
-				msg = " Bot ";
-				break;
-			}
-		}
+		vtcol = n - 16;	/* strlen(" top ") plus a couple */
+		sprintf(tline, "%2d,%2d ", currow + 1, curcol);
+
 		if (lback(wp->w_linep) == wp->w_bufp->b_linep) {
-			if (msg) {
-				if (wp->w_linep == wp->w_bufp->b_linep)
-					msg = " Emp ";
-				else
-					msg = " All ";
+			msg = tline;
+			if (wp->w_linep == wp->w_bufp->b_linep) {
+				strcat(tline, "Emp ");
+			} else if (currow == 0) {
+				strcat(tline, "Top ");
 			} else {
-				msg = " Top ";
+				msg = NULL;
 			}
 		}
 		if (!msg) {
@@ -1230,18 +1225,24 @@ static void modeline(struct window *wp)
 				++numlines;
 				lp = lforw(lp);
 			}
+			predlines += currow;
+			sprintf(tline, "%2d,%2d ", predlines ?
+						predlines + 1 : numlines + 1,
+						curcol);
 			if (wp->w_dotp == bp->b_linep) {
-				msg = " Bot ";
+				strcat(tline, "Bot ");
 			} else {
+				char tmpstr[16];
 				ratio = 0;
 				if (numlines != 0)
 					ratio =
 					    (100L * predlines) / numlines;
 				if (ratio > 99)
 					ratio = 99;
-				sprintf(tline, " %2d%% ", ratio);
-				msg = tline;
+				sprintf(tmpstr, "%2d%% ", ratio);
+				strcat(tline, tmpstr);
 			}
+			msg = tline;
 		}
 
 		cp = msg;
