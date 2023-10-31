@@ -405,7 +405,8 @@ int forwpage(int f, int n)
 	lp = curwp->w_linep;
 	while (n-- && lp != curbp->b_linep)
 		lp = lforw(lp);
-	curwp->w_linep = lp;
+	if (lp != curbp->b_linep)
+		curwp->w_linep = lp;
 	curwp->w_dotp = lp;
 	curwp->w_doto = 0;
 #if SCROLLCODE
