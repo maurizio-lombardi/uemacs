@@ -53,9 +53,9 @@ struct key_tab keytab[NBINDS] = {
 	,
 	{CONTROL | 'R', backsearch}
 	,
-	{CONTROL | 'S', forwsearch}
+	{CONTROL | 'S', forwhunt}
 	,
-	{CONTROL | 'T', forwhunt}
+	{CONTROL | 'T', twiddle}
 	,
 	{CONTROL | 'U', unarg}
 	,
