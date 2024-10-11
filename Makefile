@@ -32,7 +32,7 @@ HDR=ebind.h edef.h efunc.h epath.h estruct.h evar.h util.h version.h
 
 # DO NOT ADD OR MODIFY ANY LINES ABOVE THIS -- make source creates them
 
-CC=gcc
+CC=cc
 WARNINGS=-Wall -Wstrict-prototypes
 CFLAGS=-O2 $(WARNINGS) -g
 #CC=c89 +O3			# HP
@@ -47,6 +47,9 @@ ifeq ($(uname_S),FreeBSD)
 endif
 ifeq ($(uname_S),Darwin)
  DEFINES=-DAUTOCONF -DPOSIX -DSYSV -D_DARWIN_C_SOURCE -D_BSD_SOURCE -D_SVID_SOURCE -D_XOPEN_SOURCE=600
+endif
+ifeq ($(uname_S),OpenBSD)
+ DEFINES=-DAUTOCONF -DPOSIX -DBSD -D_BSD_SOURCE
 endif
 #DEFINES=-DAUTOCONF
 #LIBS=-ltermcap			# BSD

@@ -81,7 +81,11 @@ char *dolock(char *fname)
 	if ((n = read(fd, locker, MAXNAME)) < 1) {
 		lseek(fd, 0, SEEK_SET);
 /*		strcpy(locker, getlogin()); */
+#ifdef __OpenBSD__
+		getlogin_r(locker, MAXNAME + 1);
+#else
 		cuserid(locker);
+#endif
 		strcat(locker + strlen(locker), "@");
 		gethostname(locker + strlen(locker), 64);
 		write(fd, locker, strlen(locker));

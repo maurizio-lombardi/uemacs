@@ -13,6 +13,10 @@
 #if	BSD | SVR4
 #include <sys/errno.h>
 
+#ifdef __OpenBSD__
+#include <errno.h>
+#endif
+
 static char *lname[NLOCKS];		/* names of all locked files */
 static int numlocks;			/* # of current locks active */
 
