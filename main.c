@@ -130,10 +130,6 @@ int main(int argc, char **argv)
 	(void) umask(-1); /* Use old protection (this is at wrong place). */
 #endif
 
-#if	PKCODE & BSD
-	sleep(1); /* Time for window manager. */
-#endif
-
 #if	UNIX
 #ifdef SIGWINCH
 	signal(SIGWINCH, sizesignal);
